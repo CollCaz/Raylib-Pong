@@ -1,3 +1,5 @@
+#pragma once
+#include "paddle.h"
 #include <raylib.h>
 
 typedef struct {
@@ -8,4 +10,5 @@ typedef struct {
 } Ball;
 
 void DrawBall(Ball *ball);
-void MoveBall(Ball *ball, float *delta);
+int MoveBall(Ball *ball, float *delta);
+void CollideBall(Ball *ball, Paddle *player, Paddle *cpu);

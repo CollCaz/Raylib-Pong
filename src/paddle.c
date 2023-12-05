@@ -1,5 +1,6 @@
 #include "paddle.h"
 #include <raylib.h>
+#include <raymath.h>
 
 void DrawPaddle(Paddle *paddle) {
   DrawRectangle(paddle->Position.x, paddle->Position.y, paddle->Size.x,
@@ -20,5 +21,21 @@ void ControlPaddle(Paddle *paddle, int player, float *delta) {
     if ((paddle->Position.y + paddle->Size.y) <= GetScreenHeight()) {
       paddle->Position.y += paddle->speed * *delta;
     }
+  }
+}
+
+void AiPaddle(Paddle *paddle, Vector2 *ballPos, float *delta) {
+  Vector2 bally = {paddle->Position.x, ballPos->y + GetRandomValue(10, 30)};
+  if (ballPos->x >= (GetScreenWidth() / 2.0)) {
+    paddle->Position =
+        Vector2MoveTowards(paddle->Position, bally, (paddle->speed * *delta));
+  }
+
+  if ((paddle->Position.y + paddle->Size.y) >= GetScreenHeight()) {
+    paddle->Position.y = GetScreenHeight() - paddle->Size.y;
+  }
+
+  if ((paddle->Position.y + paddle->Size.y) <= 0) {
+    paddle->Position.y = 1;
   }
 }

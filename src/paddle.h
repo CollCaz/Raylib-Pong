@@ -10,3 +10,5 @@ typedef struct {
 
 void DrawPaddle(Paddle *paddle);
 void ControlPaddle(Paddle *paddle, int player, float *delta);
+void AiPaddle(Paddle *paddle, Vector2 *ballPos, float *delta);
+bool canPaddle(Paddle *paddle);
