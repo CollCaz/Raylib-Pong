@@ -9,3 +9,4 @@ typedef struct {
 } Paddle;
 
 void DrawPaddle(Paddle *paddle);
+void ControlPaddle(Paddle *paddle, int player, float *delta);

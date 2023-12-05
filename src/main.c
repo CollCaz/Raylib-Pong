@@ -10,7 +10,9 @@ int main() {
   Ball ball = {
       {screenWidth / 2.0, screenHeight / 2.0}, {300, 300}, 15.0, WHITE};
 
-  Paddle player = {{10, screenHeight / 2.0 - 50}, {20, 120}, 400, WHITE};
+  Paddle player1 = {{10, screenHeight / 2.0 - 50}, {20, 120}, 400, WHITE};
+  Paddle player2 = {
+      {screenWidth - 35, screenHeight / 2.0 - 50}, {20, 120}, 400, WHITE};
 
   InitWindow(screenWidth, screenHeight, "Pong");
   // SetTargetFPS(270);
@@ -24,8 +26,10 @@ int main() {
     DrawBall(&ball);
     MoveBall(&ball, &dt);
     // DrawRectangle(10, screenHeight / 2 - 50, 20, 120, WHITE);
-    DrawPaddle(&player);
-    DrawRectangle(screenWidth - 35, screenHeight / 2 - 50, 20, 120, WHITE);
+    ControlPaddle(&player1, 1, &dt);
+    ControlPaddle(&player2, 2, &dt);
+    DrawPaddle(&player1);
+    DrawPaddle(&player2);
     EndDrawing();
   }
 
