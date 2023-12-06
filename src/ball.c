@@ -9,18 +9,20 @@ void DrawBall(Ball *ball) {
 
 int MoveBall(Ball *ball, float *delta) {
 
-  if (ball->position.x + ball->radius >= GetScreenWidth() ||
-      ball->position.x <= 0) {
+  if (ball->position.x + ball->radius >= GetScreenWidth() + ball->radius * 2 ||
+      ball->position.x <= -ball->radius * 2) {
 
     ball->position.x = GetScreenWidth() / 2.0;
     ball->position.y = GetScreenHeight() / 2.0;
+
+    ball->speed = Vector2Multiply(ball->speed, Vector2Negate(Vector2One()));
     return 1;
   }
 
   if (ball->position.y + ball->radius >= GetScreenHeight() ||
       ball->position.y <= ball->radius) {
-    ball->speed.y *= -1;
-    // ball->speed = Vector2Reflect(ball->speed, Vector2Normalize(ball->speed));
+    ball->speed = Vector2Reflect(ball->speed,
+                                 Vector2Normalize((Vector2){0, ball->speed.y}));
   }
 
   ball->position.x += ball->speed.x * *delta;
@@ -30,16 +32,23 @@ int MoveBall(Ball *ball, float *delta) {
 }
 
 void CollideBall(Ball *ball, Paddle *player, Paddle *cpu) {
-  Rectangle playerRect = {player->Position.x - 10, player->Position.y - 10,
-                          player->Size.x + 10, player->Size.y + 10};
+  Rectangle playerRect = {player->Position.x, player->Position.y,
+                          player->Size.x, player->Size.y};
 
-  Rectangle cpuRect = {cpu->Position.x - 10, cpu->Position.y - 10,
-                       cpu->Size.x + 10, cpu->Size.y + 10};
-  if (CheckCollisionCircleRec(ball->position, ball->radius, playerRect)) {
-    ball->speed = Vector2Rotate(ball->speed, 180.0);
+  Rectangle cpuRect = {cpu->Position.x, cpu->Position.y, cpu->Size.x,
+                       cpu->Size.y};
+
+  if (Vector2Normalize(ball->speed).x < 0) {
+    if (CheckCollisionCircleRec(ball->position, ball->radius, playerRect)) {
+      ball->speed = Vector2Reflect(
+          ball->speed, Vector2Normalize((Vector2){ball->speed.x, 0}));
+    }
   }
 
-  if (CheckCollisionCircleRec(ball->position, ball->radius, cpuRect)) {
-    ball->speed = Vector2Rotate(ball->speed, 180.0);
+  if (Vector2Normalize(ball->speed).x > 0) {
+    if (CheckCollisionCircleRec(ball->position, ball->radius, cpuRect)) {
+      ball->speed = Vector2Reflect(
+          ball->speed, Vector2Normalize((Vector2){ball->speed.x, 0}));
+    }
   }
 }

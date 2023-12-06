@@ -25,7 +25,7 @@ void ControlPaddle(Paddle *paddle, int player, float *delta) {
 }
 
 void AiPaddle(Paddle *paddle, Vector2 *ballPos, float *delta) {
-  Vector2 bally = {paddle->Position.x, ballPos->y + GetRandomValue(10, 30)};
+  Vector2 bally = {paddle->Position.x, ballPos->y + GetRandomValue(-20, 20)};
   if (ballPos->x >= (GetScreenWidth() / 2.0)) {
     paddle->Position =
         Vector2MoveTowards(paddle->Position, bally, (paddle->speed * *delta));

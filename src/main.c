@@ -1,15 +1,16 @@
 #include "ball.h"
 #include "paddle.h"
 #include <raylib.h>
-#include <stdio.h>
 
 int main() {
   const int screenWidth = 800;
   const int screenHeight = 450;
-  char *message = "Hello";
+
+  int score1 = 0;
+  int score2 = 0;
 
   Ball ball = {
-      {screenWidth / 2.0, screenHeight / 2.0}, {300, 300}, 15.0, WHITE};
+      {screenWidth / 2.0, screenHeight / 2.0}, {400, 400}, 15.0, WHITE};
 
   Paddle player1 = {{10, screenHeight / 2.0 - 50}, {20, 120}, 400, WHITE};
   Paddle player2 = {
@@ -27,8 +28,9 @@ int main() {
 
     DrawBall(&ball);
     if (MoveBall(&ball, &dt) == 1) {
-      printf("AA");
+      score1 += 1;
     }
+
     CollideBall(&ball, &player1, &player2);
     ControlPaddle(&player1, 1, &dt);
     AiPaddle(&player2, &ball.position, &dt);
